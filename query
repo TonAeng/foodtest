@@ -1,0 +1,216 @@
+import 'package:flutter/material.dart';
+
+class QueryPage extends StatefulWidget {
+  @override
+  _QueryPageState createState() => _QueryPageState();
+}
+
+class _QueryPageState extends State<QueryPage> {
+  int _currentStep = 0;
+  String _name = '';
+  String _gender = '';
+  String _height = '';
+  String _weight = '';
+  String _age = '';
+  String _foodAllergy = 'ไม่มี';
+  String _chronicDisease = 'ไม่มี';
+  String _selectedGender = '';
+
+  List<Step> _buildSteps() {
+    return [
+      // Step 1: Personal Information
+      Step(
+        title: Text('ข้อมูลส่วนตัว'),
+        content: Column(
+          children: [
+            TextFormField(
+              onChanged: (value) => _name = value,
+              decoration: InputDecoration(labelText: 'ชื่อของคุณ'),
+            ),
+          ],
+        ),
+        isActive: _currentStep == 0,
+      ),
+      // Step 2: Gender
+      Step(
+        title: Text('เพศ'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _selectedGender = 'ชาย';
+                });
+              },
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.male,
+                    size: 50.0,
+                    color: _selectedGender == 'ชาย' ? Colors.blue : Colors.grey,
+                  ),
+                  Text('ชาย'),
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _selectedGender = 'หญิง';
+                });
+              },
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.female,
+                    size: 50.0,
+                    color:
+                        _selectedGender == 'หญิง' ? Colors.pink : Colors.grey,
+                  ),
+                  Text('หญิง'),
+                ],
+              ),
+            ),
+          ],
+        ),
+        isActive: _currentStep == 1,
+      ),
+      // Step 3: Height
+      Step(
+        title: Text('ส่วนสูง'),
+        content: Column(
+          children: [
+            TextFormField(
+              onChanged: (value) => _height = value,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'ส่วนสูง (ซม.)'),
+            ),
+          ],
+        ),
+        isActive: _currentStep == 2,
+      ),
+      // Step 4: Weight
+      Step(
+        title: Text('น้ำหนัก'),
+        content: Column(
+          children: [
+            TextFormField(
+              onChanged: (value) => _weight = value,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'น้ำหนัก (กก.)'),
+            ),
+          ],
+        ),
+        isActive: _currentStep == 3,
+      ),
+      // Step 5: Age
+      Step(
+        title: Text('อายุ'),
+        content: Column(
+          children: [
+            TextFormField(
+              onChanged: (value) => _age = value,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'อายุ (ปี)'),
+            ),
+          ],
+        ),
+        isActive: _currentStep == 4,
+      ),
+      // Step 6: Food Allergy
+      Step(
+        title: Text('แพ้อาหาร'),
+        content: Column(
+          children: [
+            DropdownButton<String>(
+              value: _foodAllergy,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _foodAllergy = newValue!;
+                });
+              },
+              items: <String>['ไม่มี', 'มี']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              hint: Text('คุณมีแพ้อาหารหรือไม่'),
+            ),
+            if (_foodAllergy == 'มี')
+              TextFormField(
+                decoration: InputDecoration(labelText: 'ระบุอาหารที่แพ้'),
+              ),
+          ],
+        ),
+        isActive: _currentStep == 5,
+      ),
+      // Step 7: Chronic Disease
+      Step(
+        title: Text('โรคประจำตัว'),
+        content: Column(
+          children: [
+            DropdownButton<String>(
+              value: _chronicDisease,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _chronicDisease = newValue!;
+                });
+              },
+              items: <String>['ไม่มี', 'มี']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              hint: Text('คุณมีโรคประจำตัวหรือไม่'),
+            ),
+            if (_chronicDisease == 'มี')
+              TextFormField(
+                decoration: InputDecoration(labelText: 'ระบุโรคประจำตัว'),
+              ),
+          ],
+        ),
+        isActive: _currentStep == 6,
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('แบบสอบถาม')),
+      body: Stepper(
+        steps: _buildSteps(),
+        currentStep: _currentStep,
+        onStepContinue: () {
+          if (_currentStep < _buildSteps().length - 1) {
+            setState(() {
+              _currentStep++;
+            });
+          } else {
+            // Save the data and close the app
+            // Implement your data saving logic here
+            print('Data saved');
+            Navigator.of(context).pop();
+          }
+        },
+        onStepCancel: () {
+          if (_currentStep > 0) {
+            setState(() {
+              _currentStep--;
+            });
+          }
+        },
+        onStepTapped: (int step) {
+          setState(() {
+            _currentStep = step;
+          });
+        },
+      ),
+    );
+  }
+}

@@ -74,7 +74,7 @@ class _FirstPageState extends State<FirstPage> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/query1.jpg'),
+                image: AssetImage('assets/images/query1_1.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -143,7 +143,7 @@ class _FirstPageState extends State<FirstPage> {
                 SizedBox(height: 50),
                 Center(
                   child: Text(
-                    'Step 1/5',
+                    'Step 1/7',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -275,7 +275,7 @@ class _SecondPageState extends State<SecondPage> {
                 SizedBox(height: 50),
                 Center(
                   child: Text(
-                    'Step 2/5',
+                    'Step 2/7',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -291,7 +291,7 @@ class _SecondPageState extends State<SecondPage> {
 
 class ThirdPage extends StatefulWidget {
   final String name;
-  final String? gender;
+  final String gender;
 
   ThirdPage({required this.name, required this.gender});
 
@@ -300,50 +300,501 @@ class ThirdPage extends StatefulWidget {
 }
 
 class _ThirdPageState extends State<ThirdPage> {
-  TextEditingController heightController = TextEditingController();
+  double _height = 150;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Step 3: Enter your height'),
+        title: Text('Step 3: Your height'),
         backgroundColor: Colors.green,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: heightController,
-              keyboardType: TextInputType.number,
-              decoration:
-                  InputDecoration(hintText: 'Enter your height in centimeters'),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/query1.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
-            ElevatedButton(
-              child: Text('Next'),
-              onPressed: () {
-                double? height = double.tryParse(heightController.text);
-                if (height != null) {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => FourthPage(
-                  //       name: widget.name,
-                  //       gender: widget.gender,
-                  //       height: height,
-                  //     ),
-                  //   ),
-                  // );
-                } else {
-                  // Show an error message if the input is not valid
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please enter a valid height')),
-                  );
-                }
-              },
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Spacer(),
+                Center(
+                  child: Text(
+                    'Your height',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    '${_height.toInt()} cm',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Expanded(
+                  child: RotatedBox(
+                    quarterTurns: 3,
+                    child: SliderTheme(
+                      data: SliderThemeData(
+                        trackHeight: 2,
+                        thumbShape:
+                            RoundSliderThumbShape(enabledThumbRadius: 15),
+                      ),
+                      child: Slider(
+                        value: _height,
+                        min: 100,
+                        max: 250,
+                        onChanged: (double value) {
+                          setState(() {
+                            _height = value;
+                          });
+                        },
+                        activeColor: Colors.green,
+                        inactiveColor: Colors.grey,
+                        label: '${_height.toInt()} cm',
+                        divisions: 150,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    child: Text('Next'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FourthPage(
+                              name: widget.name,
+                              gender: widget.gender,
+                              height: _height.toInt()),
+                        ),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 50)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
+                Center(
+                  child: Text(
+                    'Step 3/7',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FourthPage extends StatefulWidget {
+  final String name;
+  final String gender;
+  final int height;
+
+  FourthPage({required this.name, required this.gender, required this.height});
+
+  @override
+  _FourthPageState createState() => _FourthPageState();
+}
+
+class _FourthPageState extends State<FourthPage> {
+  double _weight = 50;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Step 4: Your weight'),
+        backgroundColor: Colors.green,
+      ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/query1.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Spacer(),
+                Center(
+                  child: Text(
+                    'Your weight',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    '${_weight.toInt()} kg',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                SizedBox(height: 20),
+                SliderTheme(
+                  data: SliderThemeData(
+                    trackHeight: 2,
+                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 15),
+                  ),
+                  child: Slider(
+                    value: _weight,
+                    min: 30,
+                    max: 200,
+                    onChanged: (double value) {
+                      setState(() {
+                        _weight = value;
+                      });
+                    },
+                    activeColor: Colors.green,
+                    inactiveColor: Colors.grey,
+                    label: '${_weight.toInt()} kg',
+                    divisions: 170,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    child: Text('Next'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FifthPage(
+                              name: widget.name,
+                              gender: widget.gender,
+                              height: widget.height,
+                              weight: _weight.toInt()),
+                        ),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 50)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
+                Center(
+                  child: Text(
+                    'Step 4/7',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FifthPage extends StatefulWidget {
+  final String name;
+  final String gender;
+  final int height;
+  final int weight;
+
+  FifthPage(
+      {required this.name,
+      required this.gender,
+      required this.height,
+      required this.weight});
+
+  @override
+  _FifthPageState createState() => _FifthPageState();
+}
+
+class _FifthPageState extends State<FifthPage> {
+  double _age = 18;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Step 5: Your age'),
+        backgroundColor: Colors.green,
+      ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/query1.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Spacer(),
+                Center(
+                  child: Text(
+                    'Your age',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    '${_age.toInt()} years',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                SizedBox(height: 20),
+                SliderTheme(
+                  data: SliderThemeData(
+                    trackHeight: 2,
+                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 15),
+                  ),
+                  child: Slider(
+                    value: _age,
+                    min: 1,
+                    max: 120,
+                    onChanged: (double value) {
+                      setState(() {
+                        _age = value;
+                      });
+                    },
+                    activeColor: Colors.green,
+                    inactiveColor: Colors.grey,
+                    label: '${_age.toInt()} years',
+                    divisions: 119,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    child: Text('Next'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SixthPage(
+                              name: widget.name,
+                              gender: widget.gender,
+                              height: widget.height,
+                              weight: widget.weight,
+                              age: _age.toInt()),
+                        ),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 50)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
+                Center(
+                  child: Text(
+                    'Step 5/7',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SixthPage extends StatefulWidget {
+  final int age;
+  final String name;
+  final String gender;
+  final int height;
+  final int weight;
+
+  SixthPage(
+      {required this.age,
+      required this.name,
+      required this.gender,
+      required this.height,
+      required this.weight});
+  _SixthPageState createState() => _SixthPageState();
+}
+
+class _SixthPageState extends State<SixthPage> {
+  bool _hasAllergy = false;
+  List<bool> _allergens = List<bool>.filled(9, false);
+
+  String _getAllergenName(int index) {
+    switch (index) {
+      case 0:
+        return 'ไข่';
+      case 1:
+        return 'ปลา';
+      case 2:
+        return 'นม';
+      case 3:
+        return 'ถั่วเหลือง';
+      case 4:
+        return 'ถั่วลิสง';
+      case 5:
+        return 'แป้งสาลีและกลูเต็น';
+      case 6:
+        return 'สัตว์น้ำเปลือกแข็ง เช่น กุ้ง ปู หอย หมึก ฯลฯ';
+      case 7:
+        return 'ถั่วตระกูล Tree Nuts เช่น อัลมอนด์ วอลนัท มะม่วงหิมพานต์ แมคคาเดเมีย พิสตาชิโอ ฯลฯ';
+      case 8:
+        return 'ผักและผลไม้ อาจเกิดอาการแพ้ที่ริมฝีปากและในลำคอ';
+      default:
+        return '';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Step 6: Allergies'),
+        backgroundColor: Colors.green,
+      ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Spacer(),
+                Center(
+                  child: Text(
+                    'คุณมีอาการแพ้อาหารใดๆหรือไม่?',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Radio(
+                      value: false,
+                      groupValue: _hasAllergy,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _hasAllergy = value!;
+                        });
+                      },
+                    ),
+                    Text('ไม่มี'),
+                    Radio(
+                      value: true,
+                      groupValue: _hasAllergy,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _hasAllergy = value!;
+                        });
+                      },
+                    ),
+                    Text('มี'),
+                  ],
+                ),
+                if (_hasAllergy)
+                  Column(
+                    children: List<Widget>.generate(
+                      9,
+                      (index) => CheckboxListTile(
+                        title: Text(_getAllergenName(index)),
+                        value: _allergens[index],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _allergens[index] = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    child: Text('Next'),
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => SeventhPage(
+                      //       name: widget.name,
+                      //       gender: widget.gender,
+                      //       height: widget.height,
+                      //       weight: widget.weight,
+                      //       allergens: _allergens,
+                      //     ),
+                      //   ),
+                      // );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 50)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
+                Center(
+                  child: Text(
+                    'Step 6/7',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
